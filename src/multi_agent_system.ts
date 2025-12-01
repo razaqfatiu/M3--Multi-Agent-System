@@ -340,6 +340,23 @@ async function bootstrap() {
   const orchestrator = new OrchestratorAgent(llm);
   const router = new MultiAgentRouter(orchestrator, agents);
 
+  const userQuery = process.argv.slice(2).join(' ').trim();
+  if (userQuery) {
+    const traceConfig = langfuseHandler ? { callbacks: [langfuseHandler], metadata: { query_type: 'cli' } } : undefined;
+    const result = await router.route(userQuery, traceConfig);
+    console.log('\nQuery:', userQuery);
+    console.log('Ordered intents:', result.classification.intents.join(' → '));
+    for (const turn of result.turns) {
+      console.log(`\n[${turn.intentTried.toUpperCase()} AGENT]`);
+      console.log(turn.response.text);
+      console.log('Sources:', turn.response.sources.join(', '));
+    }
+    if (result.unresolvedIntents.length) {
+      console.log('\nUnresolved intents:', result.unresolvedIntents.join(', '));
+    }
+    return;
+  }
+
   await runExamples(router, langfuseHandler);
 }
 

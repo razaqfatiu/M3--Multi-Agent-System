@@ -27,13 +27,16 @@ const prompt = ChatPromptTemplate.fromMessages([
 ]);
 
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY ?? "";
-const OPENROUTER_MODEL = process.env.OPENROUTER_MODEL ?? "gpt-4o-mini";
 const OPENROUTER_BASE_URL =
   process.env.OPENROUTER_BASE_URL ?? "https://openrouter.ai/api/v1";
+const EVALUATOR_MODEL =
+  process.env.EVALUATOR_OPENROUTER_MODEL ??
+  process.env.OPENROUTER_EVALUATOR_MODEL ??
+  "gpt-4o-mini";
 
 const llm = new ChatOpenAI({
   apiKey: OPENROUTER_API_KEY,
-  model: OPENROUTER_MODEL,
+  model: EVALUATOR_MODEL,
   temperature: 0,
   configuration: {
     baseURL: OPENROUTER_BASE_URL,

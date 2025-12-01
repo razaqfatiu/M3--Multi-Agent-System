@@ -19,6 +19,7 @@ This project implements a LangChain-driven multi-agent system that classifies em
    - `OPENROUTER_API_KEY` and `OPENROUTER_BASE_URL` (defaults to `https://openrouter.ai/api/v1`).
    - `OPENROUTER_MODEL` (router + agents) and `OPENROUTER_EMBEDDING_MODEL`.
    - `OPENROUTER_EMBEDDING_DIM` (defaults to `1024`) – set this to your Pinecone index dimension. The script enforces the Pinecone free-tier ceiling (1536), so higher values fall back to 1024 automatically.
+   - `EVALUATOR_OPENROUTER_MODEL` (optional) – override the QA scorer model so the evaluator runs on a different OpenRouter model than the agents.
    - `LANGFUSE_PUBLIC_KEY`, `LANGFUSE_SECRET_KEY`, `LANGFUSE_BASE_URL`/`LANGFUSE_HOST` for tracing + scoring.
    - `PINECONE_API_KEY`, `PINECONE_INDEX`, and optional `PINECONE_CONTROLLER_HOST` so the router can seed/query Pinecone. `PINECONE_NAMESPACE_PREFIX` controls namespace names (default `dept`) and `PINECONE_SKIP_SEED=true` skips re-uploading docs on each run (useful once the corpora are already in the index).
    - Ensure your Pinecone index dimension matches the selected embedding model (e.g., `text-embedding-3-large` = 3072 dimensions).
@@ -35,6 +36,13 @@ npm start
 Environment variables control which OpenRouter model is used, so you can swap providers without code changes. Langfuse tracing automatically wraps orchestrator + agent calls when keys are present; the CLI output shows query intent, reasoning, answers, and cited sources.
 
 > **Notebook note:** This repo runs entirely via the `src/multi_agent_system.ts` entrypoint instead of a notebook. If you prefer a notebook workflow, run the same sequence: install deps → load env vars → execute the TypeScript entrypoint via `ts-node` or `npm start`.
+
+### Running a Single Query via CLI
+Pass the question after `npm start` and the router will only evaluate that prompt:
+```bash
+npm start -- "How do I request emergency PTO and restore VPN access?"
+```
+The CLI run is traced with `query_type: "cli"` and prints every agent turn (answers, sources, handoff info). Without extra arguments, the script falls back to the bundled sample queries.
 
 ### How Routing & Handoffs Work
 - **Multi-intent classification** – the orchestrator (LangChain prompt + Zod schema) always returns an ordered list of departments. If a question mixes topics (e.g., HR + Tech), every relevant agent is queued sequentially.
