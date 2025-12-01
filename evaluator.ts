@@ -17,13 +17,13 @@ const formatInstructions = instructionsParser.getFormatInstructions();
 
 const prompt = ChatPromptTemplate.fromMessages([
   [
-    'system',
-    'You are the QA evaluator. Score helpfulness on a 1-10 scale considering relevance, accuracy, and completeness.',
+    "system",
+    "You are the QA evaluator. Score helpfulness on a 1-10 scale considering relevance, accuracy, and completeness."
   ],
   [
-    'human',
-    `Question: {question}\nAnswer: {answer}\n\nProvide JSON following: ${formatInstructions}`,
-  ],
+    "human",
+    "Question: {question}\nAnswer: {answer}\n\nProvide JSON following: {format_instructions}"
+  ]
 ]);
 
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY ?? "";
@@ -32,7 +32,7 @@ const OPENROUTER_BASE_URL =
 const EVALUATOR_MODEL =
   process.env.EVALUATOR_OPENROUTER_MODEL ??
   process.env.OPENROUTER_EVALUATOR_MODEL ??
-  "gpt-4o-mini";
+  "openai/gpt-5-mini";
 
 const llm = new ChatOpenAI({
   apiKey: OPENROUTER_API_KEY,
@@ -61,7 +61,11 @@ export async function evaluateAnswer(
   answer: string,
   traceId?: string
 ): Promise<EvaluationResult> {
-  const messages = await prompt.formatMessages({ question, answer });
+  const messages = await prompt.formatMessages({
+    question,
+    answer,
+    format_instructions: instructionsParser.getFormatInstructions()
+  });
   const response = await llm.invoke(messages);
   const parsed = await instructionsParser.parse(extractText(response));
   const result: EvaluationResult = {

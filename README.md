@@ -49,7 +49,7 @@ The CLI run is traced with `query_type: "cli"` and prints every agent turn (answ
 ## Evaluator Agent (Bonus)
 The evaluator scores answers using the same OpenRouter model and pushes qualitative metrics to Langfuse:
 ```bash
-npx ts-node evaluator.ts "How do I expense a work trip?" "Submit receipts within 10 days via Coupa."
+npx tsx evaluator.ts "How do I expense a work trip?" "Submit receipts within 10 days via Coupa."
 ```
 Pass a Langfuse trace ID as the third argument when embedding into workflows so the score attaches to the correct trace via `evaluateAnswer(question, answer, traceId)`.
 
