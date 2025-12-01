@@ -1,0 +1,12 @@
+[
+  {"query": "How do I update my dependent coverage during open enrollment?", "expected_intent": "hr"},
+  {"query": "Laptop encryption failed during latest CrowdStrike rollout", "expected_intent": "tech"},
+  {"query": "When are reimbursements for customer dinners processed?", "expected_intent": "finance"},
+  {"query": "System is rejecting my MFAs for payroll login", "expected_intent": "tech"},
+  {"query": "Who approves relocation stipends for senior hires?", "expected_intent": "hr"},
+  {"query": "What receipts do I need for CapEx purchases over $10k?", "expected_intent": "finance"},
+  {"query": "Slack SSO is looping on mobile", "expected_intent": "tech"},
+  {"query": "I need to extend maternity leave by two weeks", "expected_intent": "hr"},
+  {"query": "How do I submit an updated W-8BEN for a vendor?", "expected_intent": "finance"},
+  {"query": "Question about cross-functional workflow", "expected_intent": "unknown"}
+]
