@@ -23,10 +23,6 @@ This project implements a LangChain-driven multi-agent system that classifies em
    - `LANGFUSE_PUBLIC_KEY`, `LANGFUSE_SECRET_KEY`, `LANGFUSE_BASE_URL`/`LANGFUSE_HOST` for tracing + scoring.
    - `PINECONE_API_KEY`, `PINECONE_INDEX`, and optional `PINECONE_CONTROLLER_HOST` so the router can seed/query Pinecone. `PINECONE_NAMESPACE_PREFIX` controls namespace names (default `dept`) and `PINECONE_SKIP_SEED=true` skips re-uploading docs on each run (useful once the corpora are already in the index).
    - Ensure your Pinecone index dimension matches the selected embedding model (e.g., `text-embedding-3-large` = 3072 dimensions).
-3. **TypeScript build (optional)**
-   ```bash
-   npm run build
-   ```
 
 ## Running the Multi-Agent System
 Execute the orchestrator (loads docs, builds vector stores, and runs sample questions):
